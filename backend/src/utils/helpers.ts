@@ -1,8 +1,22 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key-change-in-production';
+// Require JWT secrets from environment - no fallbacks for security
+const getJWTSecret = (): string => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error('JWT_SECRET environment variable is required');
+  }
+  return secret;
+};
+
+const getJWTRefreshSecret = (): string => {
+  const secret = process.env.JWT_REFRESH_SECRET;
+  if (!secret) {
+    throw new Error('JWT_REFRESH_SECRET environment variable is required');
+  }
+  return secret;
+};
 
 export const hashPassword = async (password: string): Promise<string> => {
   const salt = await bcrypt.genSalt(10);
@@ -17,25 +31,25 @@ export const comparePassword = async (
 };
 
 export const generateAccessToken = (userId: string): string => {
-  return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '15m' });
+  return jwt.sign({ userId }, getJWTSecret(), { expiresIn: '15m' });
 };
 
 export const generateRefreshToken = (userId: string): string => {
-  return jwt.sign({ userId }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
+  return jwt.sign({ userId }, getJWTRefreshSecret(), { expiresIn: '7d' });
 };
 
 export const verifyAccessToken = (token: string): { userId: string } | null => {
   try {
-    return jwt.verify(token, JWT_SECRET) as { userId: string };
-  } catch (error) {
+    return jwt.verify(token, getJWTSecret()) as { userId: string };
+  } catch {
     return null;
   }
 };
 
 export const verifyRefreshToken = (token: string): { userId: string } | null => {
   try {
-    return jwt.verify(token, JWT_REFRESH_SECRET) as { userId: string };
-  } catch (error) {
+    return jwt.verify(token, getJWTRefreshSecret()) as { userId: string };
+  } catch {
     return null;
   }
 };

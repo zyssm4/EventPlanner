@@ -117,10 +117,10 @@ BudgetItemModel.init(
   }
 );
 
-BudgetCategoryModel.belongsTo(Event, { foreignKey: 'eventId' });
-Event.hasMany(BudgetCategoryModel, { foreignKey: 'eventId' });
+BudgetCategoryModel.belongsTo(Event, { foreignKey: 'eventId', onDelete: 'CASCADE' });
+Event.hasMany(BudgetCategoryModel, { foreignKey: 'eventId', onDelete: 'CASCADE' });
 
-BudgetItemModel.belongsTo(BudgetCategoryModel, { foreignKey: 'categoryId' });
-BudgetCategoryModel.hasMany(BudgetItemModel, { foreignKey: 'categoryId' });
+BudgetItemModel.belongsTo(BudgetCategoryModel, { foreignKey: 'categoryId', onDelete: 'CASCADE' });
+BudgetCategoryModel.hasMany(BudgetItemModel, { foreignKey: 'categoryId', onDelete: 'CASCADE' });
 
 export { BudgetCategoryModel, BudgetItemModel };

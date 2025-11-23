@@ -144,35 +144,65 @@ export const getVenue = async (req: AuthRequest, res: Response): Promise<void> =
 
 export const updateVenue = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const [updated] = await VenueModel.update(req.body, {
-      where: { id: req.params.id }
-    });
-
-    if (!updated) {
+    // Verify user owns the venue via event
+    const venue = await VenueModel.findByPk(req.params.id);
+    if (!venue) {
       res.status(404).json({ error: 'Venue not found' });
       return;
     }
 
-    const venue = await VenueModel.findByPk(req.params.id);
-    res.json(venue);
+    const event = await Event.findOne({
+      where: {
+        id: venue.eventId,
+        userId: req.userId!
+      }
+    });
+
+    if (!event) {
+      res.status(403).json({ error: 'Not authorized to update this venue' });
+      return;
+    }
+
+    await VenueModel.update(req.body, {
+      where: { id: req.params.id }
+    });
+
+    const updatedVenue = await VenueModel.findByPk(req.params.id);
+    res.json(updatedVenue);
   } catch (error) {
+    console.error('Update venue error:', error);
     res.status(500).json({ error: 'Failed to update venue' });
   }
 };
 
 export const deleteVenue = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const deleted = await VenueModel.destroy({
-      where: { id: req.params.id }
-    });
-
-    if (!deleted) {
+    // Verify user owns the venue via event
+    const venue = await VenueModel.findByPk(req.params.id);
+    if (!venue) {
       res.status(404).json({ error: 'Venue not found' });
       return;
     }
 
+    const event = await Event.findOne({
+      where: {
+        id: venue.eventId,
+        userId: req.userId!
+      }
+    });
+
+    if (!event) {
+      res.status(403).json({ error: 'Not authorized to delete this venue' });
+      return;
+    }
+
+    await VenueModel.destroy({
+      where: { id: req.params.id }
+    });
+
     res.status(204).send();
   } catch (error) {
+    console.error('Delete venue error:', error);
     res.status(500).json({ error: 'Failed to delete venue' });
   }
 };

@@ -7,12 +7,13 @@ import * as timelineController from '../controllers/timeline.controller';
 import * as supplierController from '../controllers/supplier.controller';
 import * as exportController from '../controllers/export.controller';
 import { authenticate } from '../middleware/auth.middleware';
+import { authRateLimit, exportRateLimit } from '../middleware/rateLimit.middleware';
 
 const router = Router();
 
-// Auth routes
-router.post('/auth/register', authController.register);
-router.post('/auth/login', authController.login);
+// Auth routes (with rate limiting)
+router.post('/auth/register', authRateLimit, authController.register);
+router.post('/auth/login', authRateLimit, authController.login);
 router.post('/auth/refresh', authController.refreshToken);
 router.post('/auth/logout', authenticate, authController.logout);
 router.get('/auth/me', authenticate, authController.getProfile);
@@ -62,9 +63,9 @@ router.post('/events/:eventId/venue', authenticate, supplierController.createVen
 router.put('/venues/:id', authenticate, supplierController.updateVenue);
 router.delete('/venues/:id', authenticate, supplierController.deleteVenue);
 
-// Export routes
-router.get('/events/:eventId/export/pdf', authenticate, exportController.exportEventPlanPDF);
-router.get('/events/:eventId/export/excel', authenticate, exportController.exportBudgetExcel);
-router.get('/events/:eventId/export/json', authenticate, exportController.exportEventJSON);
+// Export routes (with rate limiting)
+router.get('/events/:eventId/export/pdf', authenticate, exportRateLimit, exportController.exportEventPlanPDF);
+router.get('/events/:eventId/export/excel', authenticate, exportRateLimit, exportController.exportBudgetExcel);
+router.get('/events/:eventId/export/json', authenticate, exportRateLimit, exportController.exportEventJSON);
 
 export default router;

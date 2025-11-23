@@ -84,7 +84,7 @@ Event.init(
   }
 );
 
-Event.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(Event, { foreignKey: 'userId' });
+Event.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE' });
+User.hasMany(Event, { foreignKey: 'userId', onDelete: 'CASCADE' });
 
 export default Event;

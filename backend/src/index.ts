@@ -11,11 +11,27 @@ import { Language } from './types';
 
 dotenv.config();
 
+// Validate required environment variables
+const validateEnv = () => {
+  const required = ['JWT_SECRET', 'JWT_REFRESH_SECRET', 'DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASSWORD'];
+  const missing = required.filter(key => !process.env[key]);
+  if (missing.length > 0) {
+    throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+  }
+};
+
+validateEnv();
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -44,10 +60,8 @@ const createDefaultAdmin = async () => {
         name: 'Admin',
         language: Language.EN
       });
-      console.log('Default admin user created:');
-      console.log('  Email: admin@eventplanner.local');
-      console.log('  Password: Admin123!');
-      console.log('  (Please change this password after first login)');
+      console.log('Default admin user created (admin@eventplanner.local)');
+      console.log('Please change the default password after first login');
     }
   } catch (error) {
     console.error('Error creating default admin:', error);
