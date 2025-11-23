@@ -64,7 +64,17 @@ SupplierModel.init(
   {
     sequelize,
     tableName: 'suppliers',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: 'suppliers_user_id_idx',
+        fields: ['userId']
+      },
+      {
+        name: 'suppliers_user_name_idx',
+        fields: ['userId', 'name']
+      }
+    ]
   }
 );
 
@@ -132,7 +142,14 @@ VenueModel.init(
   {
     sequelize,
     tableName: 'venues',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: 'venues_event_id_idx',
+        unique: true,
+        fields: ['eventId']
+      }
+    ]
   }
 );
 

@@ -55,6 +55,39 @@ export const getCategories = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const updateCategory = async (req: AuthRequest, res: Response) => {
+  try {
+    const [updated] = await BudgetCategoryModel.update(req.body, {
+      where: { id: req.params.id }
+    });
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Category not found' });
+    }
+
+    const category = await BudgetCategoryModel.findByPk(req.params.id);
+    res.json(category);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update category' });
+  }
+};
+
+export const deleteCategory = async (req: AuthRequest, res: Response) => {
+  try {
+    const deleted = await BudgetCategoryModel.destroy({
+      where: { id: req.params.id }
+    });
+
+    if (!deleted) {
+      return res.status(404).json({ error: 'Category not found' });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete category' });
+  }
+};
+
 export const createItem = async (req: AuthRequest, res: Response) => {
   try {
     const item = await BudgetItemModel.create({

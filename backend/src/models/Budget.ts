@@ -38,7 +38,17 @@ BudgetCategoryModel.init(
   {
     sequelize,
     tableName: 'budget_categories',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: 'budget_categories_event_id_idx',
+        fields: ['eventId']
+      },
+      {
+        name: 'budget_categories_event_order_idx',
+        fields: ['eventId', 'order']
+      }
+    ]
   }
 );
 
@@ -93,7 +103,17 @@ BudgetItemModel.init(
   {
     sequelize,
     tableName: 'budget_items',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: 'budget_items_category_id_idx',
+        fields: ['categoryId']
+      },
+      {
+        name: 'budget_items_category_order_idx',
+        fields: ['categoryId', 'order']
+      }
+    ]
   }
 );
 
