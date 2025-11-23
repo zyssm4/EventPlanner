@@ -27,7 +27,7 @@ class ApiClient {
     });
 
     this.client.interceptors.request.use((config) => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('accessToken');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -38,7 +38,8 @@ class ApiClient {
       (response) => response,
       (error: AxiosError) => {
         if (error.response?.status === 401) {
-          localStorage.removeItem('token');
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
           window.location.href = '/login';
         }
         return Promise.reject(error);
@@ -62,8 +63,12 @@ class ApiClient {
     return data;
   }
 
-  async updateProfile(updates: Partial<User>): Promise<User> {
-    const { data } = await this.client.patch<User>('/auth/profile', updates);
+  async updateLanguage(language: string): Promise<void> {
+    await this.client.patch('/auth/language', { language });
+  }
+
+  async refreshToken(refreshToken: string): Promise<{ accessToken: string; refreshToken: string }> {
+    const { data } = await this.client.post('/auth/refresh', { refreshToken });
     return data;
   }
 
@@ -84,7 +89,7 @@ class ApiClient {
   }
 
   async updateEvent(id: string, updates: Partial<Event>): Promise<Event> {
-    const { data } = await this.client.patch<Event>(`/events/${id}`, updates);
+    const { data } = await this.client.put<Event>(`/events/${id}`, updates);
     return data;
   }
 
@@ -92,16 +97,21 @@ class ApiClient {
     await this.client.delete(`/events/${id}`);
   }
 
+  async duplicateEvent(id: string): Promise<Event> {
+    const { data } = await this.client.post<Event>(`/events/${id}/duplicate`);
+    return data;
+  }
+
   async generateChecklistTemplate(eventId: string, eventType: string): Promise<ChecklistItem[]> {
-    const { data } = await this.client.post<ChecklistItem[]>(`/events/${eventId}/checklist/generate`, {
+    const { data } = await this.client.post<ChecklistItem[]>(`/events/${eventId}/checklist/template`, {
       eventType,
     });
     return data;
   }
 
-  // Budget Categories
-  async getBudgetCategories(eventId: string): Promise<BudgetCategory[]> {
-    const { data } = await this.client.get<BudgetCategory[]>(`/events/${eventId}/budget/categories`);
+  // Budget
+  async getBudgetSummary(eventId: string): Promise<{ totalEstimated: number; totalActual: number; variance: number; categories: Array<{ name: string; estimated: number; actual: number }> }> {
+    const { data } = await this.client.get(`/events/${eventId}/budget`);
     return data;
   }
 
@@ -111,67 +121,51 @@ class ApiClient {
   ): Promise<BudgetCategory> {
     const { data } = await this.client.post<BudgetCategory>(
       `/events/${eventId}/budget/categories`,
-      category
+      { ...category, eventId }
     );
     return data;
   }
 
   async updateBudgetCategory(
-    eventId: string,
     categoryId: string,
     updates: Partial<BudgetCategory>
   ): Promise<BudgetCategory> {
-    const { data } = await this.client.patch<BudgetCategory>(
-      `/events/${eventId}/budget/categories/${categoryId}`,
+    const { data } = await this.client.put<BudgetCategory>(
+      `/budget/categories/${categoryId}`,
       updates
     );
     return data;
   }
 
-  async deleteBudgetCategory(eventId: string, categoryId: string): Promise<void> {
-    await this.client.delete(`/events/${eventId}/budget/categories/${categoryId}`);
+  async deleteBudgetCategory(categoryId: string): Promise<void> {
+    await this.client.delete(`/budget/categories/${categoryId}`);
   }
 
   // Budget Items
-  async getBudgetItems(eventId: string, categoryId: string): Promise<BudgetItem[]> {
-    const { data } = await this.client.get<BudgetItem[]>(
-      `/events/${eventId}/budget/categories/${categoryId}/items`
-    );
-    return data;
-  }
-
-  async getAllBudgetItems(eventId: string): Promise<BudgetItem[]> {
-    const { data } = await this.client.get<BudgetItem[]>(`/events/${eventId}/budget/items`);
-    return data;
-  }
-
   async createBudgetItem(
-    eventId: string,
     categoryId: string,
     item: Omit<BudgetItem, 'id' | 'categoryId'>
   ): Promise<BudgetItem> {
     const { data } = await this.client.post<BudgetItem>(
-      `/events/${eventId}/budget/categories/${categoryId}/items`,
-      item
+      `/budget/categories/${categoryId}/items`,
+      { ...item, categoryId }
     );
     return data;
   }
 
   async updateBudgetItem(
-    eventId: string,
-    categoryId: string,
     itemId: string,
     updates: Partial<BudgetItem>
   ): Promise<BudgetItem> {
-    const { data } = await this.client.patch<BudgetItem>(
-      `/events/${eventId}/budget/categories/${categoryId}/items/${itemId}`,
+    const { data } = await this.client.put<BudgetItem>(
+      `/budget/items/${itemId}`,
       updates
     );
     return data;
   }
 
-  async deleteBudgetItem(eventId: string, categoryId: string, itemId: string): Promise<void> {
-    await this.client.delete(`/events/${eventId}/budget/categories/${categoryId}/items/${itemId}`);
+  async deleteBudgetItem(itemId: string): Promise<void> {
+    await this.client.delete(`/budget/items/${itemId}`);
   }
 
   // Checklist
@@ -189,19 +183,23 @@ class ApiClient {
   }
 
   async updateChecklistItem(
-    eventId: string,
     itemId: string,
     updates: Partial<ChecklistItem>
   ): Promise<ChecklistItem> {
-    const { data } = await this.client.patch<ChecklistItem>(
-      `/events/${eventId}/checklist/${itemId}`,
+    const { data } = await this.client.put<ChecklistItem>(
+      `/checklist/${itemId}`,
       updates
     );
     return data;
   }
 
-  async deleteChecklistItem(eventId: string, itemId: string): Promise<void> {
-    await this.client.delete(`/events/${eventId}/checklist/${itemId}`);
+  async toggleChecklistItem(itemId: string): Promise<ChecklistItem> {
+    const { data } = await this.client.patch<ChecklistItem>(`/checklist/${itemId}/toggle`);
+    return data;
+  }
+
+  async deleteChecklistItem(itemId: string): Promise<void> {
+    await this.client.delete(`/checklist/${itemId}`);
   }
 
   // Timeline
@@ -219,24 +217,28 @@ class ApiClient {
   }
 
   async updateTimelineEntry(
-    eventId: string,
     entryId: string,
     updates: Partial<TimelineEntry>
   ): Promise<TimelineEntry> {
-    const { data } = await this.client.patch<TimelineEntry>(
-      `/events/${eventId}/timeline/${entryId}`,
+    const { data } = await this.client.put<TimelineEntry>(
+      `/timeline/${entryId}`,
       updates
     );
     return data;
   }
 
-  async deleteTimelineEntry(eventId: string, entryId: string): Promise<void> {
-    await this.client.delete(`/events/${eventId}/timeline/${entryId}`);
+  async deleteTimelineEntry(entryId: string): Promise<void> {
+    await this.client.delete(`/timeline/${entryId}`);
   }
 
   // Suppliers
   async getSuppliers(): Promise<Supplier[]> {
     const { data } = await this.client.get<Supplier[]>('/suppliers');
+    return data;
+  }
+
+  async getSupplier(id: string): Promise<Supplier> {
+    const { data } = await this.client.get<Supplier>(`/suppliers/${id}`);
     return data;
   }
 
@@ -246,7 +248,7 @@ class ApiClient {
   }
 
   async updateSupplier(id: string, updates: Partial<Supplier>): Promise<Supplier> {
-    const { data } = await this.client.patch<Supplier>(`/suppliers/${id}`, updates);
+    const { data } = await this.client.put<Supplier>(`/suppliers/${id}`, updates);
     return data;
   }
 
@@ -268,17 +270,17 @@ class ApiClient {
   }
 
   async createVenue(eventId: string, venue: Omit<Venue, 'id' | 'eventId'>): Promise<Venue> {
-    const { data } = await this.client.post<Venue>(`/events/${eventId}/venue`, venue);
+    const { data } = await this.client.post<Venue>(`/events/${eventId}/venue`, { ...venue, eventId });
     return data;
   }
 
-  async updateVenue(eventId: string, updates: Partial<Venue>): Promise<Venue> {
-    const { data } = await this.client.patch<Venue>(`/events/${eventId}/venue`, updates);
+  async updateVenue(venueId: string, updates: Partial<Venue>): Promise<Venue> {
+    const { data } = await this.client.put<Venue>(`/venues/${venueId}`, updates);
     return data;
   }
 
-  async deleteVenue(eventId: string): Promise<void> {
-    await this.client.delete(`/events/${eventId}/venue`);
+  async deleteVenue(venueId: string): Promise<void> {
+    await this.client.delete(`/venues/${venueId}`);
   }
 
   // Exports
