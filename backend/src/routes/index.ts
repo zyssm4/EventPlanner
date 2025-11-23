@@ -19,7 +19,7 @@ router.get('/auth/me', authenticate, authController.getProfile);
 router.patch('/auth/language', authenticate, authController.updateLanguage);
 
 // Event routes
-router.get('/events', authenticate, eventController.getAllEvents);
+router.get('/events', authenticate, eventController.getEvents);
 router.get('/events/:id', authenticate, eventController.getEvent);
 router.post('/events', authenticate, eventController.createEvent);
 router.put('/events/:id', authenticate, eventController.updateEvent);
@@ -36,11 +36,11 @@ router.put('/budget/items/:id', authenticate, budgetController.updateItem);
 router.delete('/budget/items/:id', authenticate, budgetController.deleteItem);
 
 // Checklist routes
-router.get('/events/:eventId/checklist', authenticate, checklistController.getChecklist);
-router.post('/events/:eventId/checklist', authenticate, checklistController.createItem);
-router.put('/checklist/:id', authenticate, checklistController.updateItem);
-router.patch('/checklist/:id/toggle', authenticate, checklistController.toggleComplete);
-router.delete('/checklist/:id', authenticate, checklistController.deleteItem);
+router.get('/events/:eventId/checklist', authenticate, checklistController.getChecklistItems);
+router.post('/events/:eventId/checklist', authenticate, checklistController.createChecklistItem);
+router.put('/checklist/:id', authenticate, checklistController.updateChecklistItem);
+router.patch('/checklist/:id/toggle', authenticate, checklistController.toggleChecklistItem);
+router.delete('/checklist/:id', authenticate, checklistController.deleteChecklistItem);
 router.post('/events/:eventId/checklist/template', authenticate, checklistController.generateTemplate);
 
 // Timeline routes
@@ -50,7 +50,7 @@ router.put('/timeline/:id', authenticate, timelineController.updateEntry);
 router.delete('/timeline/:id', authenticate, timelineController.deleteEntry);
 
 // Supplier routes
-router.get('/suppliers', authenticate, supplierController.getAllSuppliers);
+router.get('/suppliers', authenticate, supplierController.getSuppliers);
 router.get('/suppliers/:id', authenticate, supplierController.getSupplier);
 router.post('/suppliers', authenticate, supplierController.createSupplier);
 router.put('/suppliers/:id', authenticate, supplierController.updateSupplier);
@@ -63,8 +63,8 @@ router.put('/venues/:id', authenticate, supplierController.updateVenue);
 router.delete('/venues/:id', authenticate, supplierController.deleteVenue);
 
 // Export routes
-router.get('/events/:eventId/export/pdf', authenticate, exportController.exportPDF);
-router.get('/events/:eventId/export/excel', authenticate, exportController.exportExcel);
-router.get('/events/:eventId/export/json', authenticate, exportController.exportJSON);
+router.get('/events/:eventId/export/pdf', authenticate, exportController.exportEventPlanPDF);
+router.get('/events/:eventId/export/excel', authenticate, exportController.exportBudgetExcel);
+router.get('/events/:eventId/export/json', authenticate, exportController.exportEventJSON);
 
 export default router;

@@ -62,7 +62,21 @@ ChecklistItemModel.init(
   {
     sequelize,
     tableName: 'checklist_items',
-    timestamps: true
+    timestamps: true,
+    indexes: [
+      {
+        name: 'checklist_items_event_id_idx',
+        fields: ['eventId']
+      },
+      {
+        name: 'checklist_items_event_order_idx',
+        fields: ['eventId', 'order']
+      },
+      {
+        name: 'checklist_items_due_date_idx',
+        fields: ['dueDate']
+      }
+    ]
   }
 );
 

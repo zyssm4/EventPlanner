@@ -3,6 +3,9 @@ import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth.middleware';
 import ChecklistItemModel from '../models/Checklist';
 import Event from '../models/Event';
+import User from '../models/User';
+import { TemplateService } from '../services/template.service';
+import { Language } from '../../../shared/types';
 
 export const createChecklistItem = async (req: AuthRequest, res: Response) => {
   try {
@@ -103,5 +106,40 @@ export const toggleChecklistItem = async (req: AuthRequest, res: Response) => {
     res.json(item);
   } catch (error) {
     res.status(500).json({ error: 'Failed to toggle item' });
+  }
+};
+
+export const generateTemplate = async (req: AuthRequest, res: Response) => {
+  try {
+    const event = await Event.findOne({
+      where: {
+        id: req.params.eventId,
+        userId: req.userId!
+      }
+    });
+
+    if (!event) {
+      return res.status(404).json({ error: 'Event not found' });
+    }
+
+    const user = await User.findByPk(req.userId!);
+    const language = user?.language || Language.EN;
+
+    const templateItems = await TemplateService.getChecklistTemplate(event.type, language);
+
+    const createdItems = [];
+    for (let i = 0; i < templateItems.length; i++) {
+      const item = await ChecklistItemModel.create({
+        eventId: req.params.eventId,
+        title: templateItems[i],
+        completed: false,
+        order: i
+      });
+      createdItems.push(item);
+    }
+
+    res.status(201).json(createdItems);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to generate template' });
   }
 };

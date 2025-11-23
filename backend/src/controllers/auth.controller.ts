@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 import { Language } from '../../../shared/types';
+import { AuthRequest } from '../middleware/auth.middleware';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -74,18 +75,61 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const updateLanguage = async (req: Request, res: Response) => {
+export const updateLanguage = async (req: AuthRequest, res: Response) => {
   try {
-    const { userId } = req.params;
     const { language } = req.body;
 
     await User.update(
       { language },
-      { where: { id: userId } }
+      { where: { id: req.userId } }
     );
 
     res.json({ message: 'Language updated' });
   } catch (error) {
     res.status(500).json({ error: 'Update failed' });
+  }
+};
+
+export const refreshToken = async (req: AuthRequest, res: Response) => {
+  try {
+    const user = await User.findByPk(req.userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET || 'secret',
+      { expiresIn: '7d' }
+    );
+
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ error: 'Token refresh failed' });
+  }
+};
+
+export const logout = async (req: AuthRequest, res: Response) => {
+  try {
+    res.json({ message: 'Logged out successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Logout failed' });
+  }
+};
+
+export const getProfile = async (req: AuthRequest, res: Response) => {
+  try {
+    const user = await User.findByPk(req.userId, {
+      attributes: ['id', 'email', 'name', 'language', 'createdAt']
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to get profile' });
   }
 };

@@ -30,6 +30,25 @@ export const getSuppliers = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const getSupplier = async (req: AuthRequest, res: Response) => {
+  try {
+    const supplier = await SupplierModel.findOne({
+      where: {
+        id: req.params.id,
+        userId: req.userId!
+      }
+    });
+
+    if (!supplier) {
+      return res.status(404).json({ error: 'Supplier not found' });
+    }
+
+    res.json(supplier);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch supplier' });
+  }
+};
+
 export const updateSupplier = async (req: AuthRequest, res: Response) => {
   try {
     const [updated] = await SupplierModel.update(req.body, {
@@ -131,5 +150,21 @@ export const updateVenue = async (req: AuthRequest, res: Response) => {
     res.json(venue);
   } catch (error) {
     res.status(500).json({ error: 'Failed to update venue' });
+  }
+};
+
+export const deleteVenue = async (req: AuthRequest, res: Response) => {
+  try {
+    const deleted = await VenueModel.destroy({
+      where: { id: req.params.id }
+    });
+
+    if (!deleted) {
+      return res.status(404).json({ error: 'Venue not found' });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete venue' });
   }
 };

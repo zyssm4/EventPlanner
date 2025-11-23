@@ -66,7 +66,21 @@ Event.init(
   {
     sequelize,
     tableName: 'events',
-    timestamps: true
+    timestamps: true,
+    indexes: [
+      {
+        name: 'events_user_id_idx',
+        fields: ['userId']
+      },
+      {
+        name: 'events_date_idx',
+        fields: ['date']
+      },
+      {
+        name: 'events_user_date_idx',
+        fields: ['userId', 'date']
+      }
+    ]
   }
 );
 

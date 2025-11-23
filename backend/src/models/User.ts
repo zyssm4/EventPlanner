@@ -51,7 +51,14 @@ User.init(
   {
     sequelize,
     tableName: 'users',
-    timestamps: true
+    timestamps: true,
+    indexes: [
+      {
+        name: 'users_email_idx',
+        unique: true,
+        fields: ['email']
+      }
+    ]
   }
 );
 
