@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Download, FileText, FileSpreadsheet, FileJson, ArrowLeft, Loader2 } from 'lucide-react';
-import { ExportOptions } from '../components/exports/ExportOptions';
-import api from '../services/api';
-
-interface Event {
-  id: string;
-  name: string;
-  type: string;
-  date: string;
-}
+import { api } from '../services/api';
 
 export const ExportsPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const eventId = searchParams.get('eventId');
-  const [event, setEvent] = useState<Event | null>(null);
+  const [eventName, setEventName] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState<string | null>(null);
 
@@ -29,8 +21,8 @@ export const ExportsPage: React.FC = () => {
 
   const loadEvent = async () => {
     try {
-      const response = await api.get(`/events/${eventId}`);
-      setEvent(response.data);
+      const eventData = await api.getEvent(eventId!);
+      setEventName(eventData.name);
     } catch (error) {
       console.error('Failed to load event:', error);
     } finally {
@@ -43,17 +35,21 @@ export const ExportsPage: React.FC = () => {
 
     setExporting(format);
     try {
-      const response = await api.get(`/events/${eventId}/export/${format}`, {
-        responseType: 'blob'
-      });
+      let blob: Blob;
+      if (format === 'pdf') {
+        blob = await api.exportEventPDF(eventId);
+      } else if (format === 'excel') {
+        blob = await api.exportEventExcel(eventId);
+      } else {
+        blob = await api.exportEventJSON(eventId);
+      }
 
-      const blob = new Blob([response.data]);
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
 
       const extensions = { pdf: 'pdf', excel: 'xlsx', json: 'json' };
-      link.download = `${event?.name || 'event'}-export.${extensions[format]}`;
+      link.download = `${eventName || 'event'}-export.${extensions[format]}`;
 
       document.body.appendChild(link);
       link.click();
@@ -109,9 +105,9 @@ export const ExportsPage: React.FC = () => {
       <div className="bg-white rounded-lg shadow p-6">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Export Event Data</h1>
-          {event && (
+          {eventName && (
             <p className="text-gray-600 mt-1">
-              Exporting data for: <span className="font-medium">{event.name}</span>
+              Exporting data for: <span className="font-medium">{eventName}</span>
             </p>
           )}
         </div>
