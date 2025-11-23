@@ -1,0 +1,186 @@
+{
+  "auth": {
+    "noToken": "Aucun jeton d'authentification fourni",
+    "invalidToken": "Jeton invalide ou expire",
+    "registered": "Utilisateur enregistre avec succes",
+    "loginSuccess": "Connexion reussie",
+    "logoutSuccess": "Deconnexion reussie",
+    "emailExists": "L'email existe deja",
+    "invalidCredentials": "Email ou mot de passe invalide",
+    "passwordRequired": "Le mot de passe doit contenir au moins 8 caracteres",
+    "emailRequired": "Un email valide est requis",
+    "nameRequired": "Le nom est requis"
+  },
+  "events": {
+    "created": "Evenement cree avec succes",
+    "updated": "Evenement mis a jour avec succes",
+    "deleted": "Evenement supprime avec succes",
+    "notFound": "Evenement non trouve",
+    "unauthorized": "Vous n'etes pas autorise a acceder a cet evenement",
+    "nameRequired": "Le nom de l'evenement est requis",
+    "typeRequired": "Le type d'evenement est requis",
+    "dateRequired": "La date de l'evenement est requise",
+    "invalidType": "Type d'evenement invalide"
+  },
+  "budget": {
+    "categoryCreated": "Categorie de budget creee avec succes",
+    "categoryUpdated": "Categorie de budget mise a jour avec succes",
+    "categoryDeleted": "Categorie de budget supprimee avec succes",
+    "itemCreated": "Element de budget cree avec succes",
+    "itemUpdated": "Element de budget mis a jour avec succes",
+    "itemDeleted": "Element de budget supprime avec succes",
+    "categoryNotFound": "Categorie de budget non trouvee",
+    "itemNotFound": "Element de budget non trouve",
+    "nameRequired": "Le nom est requis",
+    "costRequired": "Le cout doit etre un nombre valide"
+  },
+  "checklist": {
+    "created": "Element de liste cree avec succes",
+    "updated": "Element de liste mis a jour avec succes",
+    "deleted": "Element de liste supprime avec succes",
+    "notFound": "Element de liste non trouve",
+    "titleRequired": "Le titre est requis",
+    "templateGenerated": "Modele de liste genere avec succes"
+  },
+  "timeline": {
+    "created": "Entree de chronologie creee avec succes",
+    "updated": "Entree de chronologie mise a jour avec succes",
+    "deleted": "Entree de chronologie supprimee avec succes",
+    "notFound": "Entree de chronologie non trouvee",
+    "titleRequired": "Le titre est requis",
+    "timeRequired": "L'heure de debut est requise"
+  },
+  "supplier": {
+    "created": "Fournisseur cree avec succes",
+    "updated": "Fournisseur mis a jour avec succes",
+    "deleted": "Fournisseur supprime avec succes",
+    "notFound": "Fournisseur non trouve",
+    "nameRequired": "Le nom est requis",
+    "categoryRequired": "La categorie est requise",
+    "contactRequired": "Les informations de contact sont requises"
+  },
+  "venue": {
+    "created": "Lieu cree avec succes",
+    "updated": "Lieu mis a jour avec succes",
+    "deleted": "Lieu supprime avec succes",
+    "notFound": "Lieu non trouve",
+    "nameRequired": "Le nom est requis",
+    "addressRequired": "L'adresse est requise",
+    "capacityRequired": "La capacite est requise"
+  },
+  "export": {
+    "success": "Export genere avec succes",
+    "failed": "La generation de l'export a echoue",
+    "invalidFormat": "Format d'export invalide"
+  },
+  "ai": {
+    "suggestionGenerated": "Suggestion IA generee avec succes",
+    "failed": "La generation de suggestion IA a echoue",
+    "notConfigured": "Le service IA n'est pas configure"
+  },
+  "errors": {
+    "validation": "Erreur de validation",
+    "duplicate": "La ressource existe deja",
+    "foreignKey": "Ressource referencee non trouvee",
+    "internal": "Erreur interne du serveur",
+    "notFound": "Ressource non trouvee",
+    "unauthorized": "Acces non autorise",
+    "forbidden": "Acces interdit"
+  },
+  "templates": {
+    "wedding": {
+      "checklist": [
+        "Definir le budget et suivre les depenses",
+        "Choisir la date du mariage",
+        "Reserver le lieu de ceremonie",
+        "Reserver le lieu de reception",
+        "Engager un organisateur de mariage",
+        "Creer la liste des invites",
+        "Envoyer les save-the-date",
+        "Choisir les temoins",
+        "Reserver le photographe",
+        "Reserver le videographe",
+        "Engager un traiteur",
+        "Choisir le menu",
+        "Reserver le fleuriste",
+        "Commander le gateau de mariage",
+        "Reserver l'animation/DJ",
+        "Choisir la robe de mariee",
+        "Choisir la tenue du marie",
+        "Acheter les alliances",
+        "Commander les invitations",
+        "Envoyer les invitations",
+        "Planifier la lune de miel",
+        "Reserver le transport",
+        "Organiser l'hebergement",
+        "Obtenir la licence de mariage",
+        "Planifier le diner de repetition",
+        "Creer le plan de table",
+        "Ecrire les voeux",
+        "Planifier les details de la ceremonie",
+        "Finaliser le calendrier",
+        "Confirmer tous les fournisseurs"
+      ]
+    },
+    "birthday": {
+      "checklist": [
+        "Definir le budget",
+        "Choisir la date et l'heure",
+        "Creer la liste des invites",
+        "Choisir le lieu",
+        "Selectionner le theme",
+        "Envoyer les invitations",
+        "Commander le gateau",
+        "Planifier le menu/traiteur",
+        "Organiser l'animation",
+        "Planifier les decorations",
+        "Commander les fournitures de fete",
+        "Planifier les activites/jeux",
+        "Organiser la musique",
+        "Planifier les cadeaux d'invites",
+        "Confirmer les reponses",
+        "Finaliser le nombre de participants",
+        "Etablir le programme",
+        "Preparer les cartes de remerciement"
+      ]
+    },
+    "company": {
+      "checklist": [
+        "Definir les objectifs de l'evenement",
+        "Definir le budget",
+        "Choisir la date",
+        "Reserver le lieu",
+        "Creer la liste des participants",
+        "Envoyer les invitations",
+        "Organiser la restauration",
+        "Installer l'equipement audiovisuel",
+        "Preparer les presentations",
+        "Organiser les intervenants",
+        "Planifier l'ordre du jour",
+        "Commander le materiel promotionnel",
+        "Organiser le transport",
+        "Reserver l'hebergement",
+        "Planifier les activites de team building",
+        "Preparer les badges",
+        "Mettre en place l'inscription",
+        "Organiser la photographie",
+        "Planifier les sessions de reseautage",
+        "Preparer les enquetes de satisfaction"
+      ]
+    }
+  },
+  "categories": {
+    "venue": "Lieu",
+    "food": "Nourriture et Traiteur",
+    "drinks": "Boissons",
+    "decoration": "Decoration",
+    "entertainment": "Animation",
+    "staff": "Personnel et Services",
+    "extras": "Extras et Divers",
+    "photography": "Photographie et Video",
+    "flowers": "Fleurs",
+    "transportation": "Transport",
+    "attire": "Tenue et Accessoires",
+    "stationery": "Papeterie et Invitations"
+  }
+}

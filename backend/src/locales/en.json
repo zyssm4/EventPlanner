@@ -1,0 +1,186 @@
+{
+  "auth": {
+    "noToken": "No authentication token provided",
+    "invalidToken": "Invalid or expired token",
+    "registered": "User registered successfully",
+    "loginSuccess": "Login successful",
+    "logoutSuccess": "Logout successful",
+    "emailExists": "Email already exists",
+    "invalidCredentials": "Invalid email or password",
+    "passwordRequired": "Password must be at least 8 characters",
+    "emailRequired": "Valid email is required",
+    "nameRequired": "Name is required"
+  },
+  "events": {
+    "created": "Event created successfully",
+    "updated": "Event updated successfully",
+    "deleted": "Event deleted successfully",
+    "notFound": "Event not found",
+    "unauthorized": "You are not authorized to access this event",
+    "nameRequired": "Event name is required",
+    "typeRequired": "Event type is required",
+    "dateRequired": "Event date is required",
+    "invalidType": "Invalid event type"
+  },
+  "budget": {
+    "categoryCreated": "Budget category created successfully",
+    "categoryUpdated": "Budget category updated successfully",
+    "categoryDeleted": "Budget category deleted successfully",
+    "itemCreated": "Budget item created successfully",
+    "itemUpdated": "Budget item updated successfully",
+    "itemDeleted": "Budget item deleted successfully",
+    "categoryNotFound": "Budget category not found",
+    "itemNotFound": "Budget item not found",
+    "nameRequired": "Name is required",
+    "costRequired": "Cost must be a valid number"
+  },
+  "checklist": {
+    "created": "Checklist item created successfully",
+    "updated": "Checklist item updated successfully",
+    "deleted": "Checklist item deleted successfully",
+    "notFound": "Checklist item not found",
+    "titleRequired": "Title is required",
+    "templateGenerated": "Checklist template generated successfully"
+  },
+  "timeline": {
+    "created": "Timeline entry created successfully",
+    "updated": "Timeline entry updated successfully",
+    "deleted": "Timeline entry deleted successfully",
+    "notFound": "Timeline entry not found",
+    "titleRequired": "Title is required",
+    "timeRequired": "Start time is required"
+  },
+  "supplier": {
+    "created": "Supplier created successfully",
+    "updated": "Supplier updated successfully",
+    "deleted": "Supplier deleted successfully",
+    "notFound": "Supplier not found",
+    "nameRequired": "Name is required",
+    "categoryRequired": "Category is required",
+    "contactRequired": "Contact information is required"
+  },
+  "venue": {
+    "created": "Venue created successfully",
+    "updated": "Venue updated successfully",
+    "deleted": "Venue deleted successfully",
+    "notFound": "Venue not found",
+    "nameRequired": "Name is required",
+    "addressRequired": "Address is required",
+    "capacityRequired": "Capacity is required"
+  },
+  "export": {
+    "success": "Export generated successfully",
+    "failed": "Export generation failed",
+    "invalidFormat": "Invalid export format"
+  },
+  "ai": {
+    "suggestionGenerated": "AI suggestion generated successfully",
+    "failed": "AI suggestion generation failed",
+    "notConfigured": "AI service is not configured"
+  },
+  "errors": {
+    "validation": "Validation error",
+    "duplicate": "Resource already exists",
+    "foreignKey": "Referenced resource not found",
+    "internal": "Internal server error",
+    "notFound": "Resource not found",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access forbidden"
+  },
+  "templates": {
+    "wedding": {
+      "checklist": [
+        "Set budget and track expenses",
+        "Choose wedding date",
+        "Book ceremony venue",
+        "Book reception venue",
+        "Hire wedding planner",
+        "Create guest list",
+        "Send save-the-dates",
+        "Choose wedding party",
+        "Book photographer",
+        "Book videographer",
+        "Hire caterer",
+        "Choose menu",
+        "Book florist",
+        "Order wedding cake",
+        "Book entertainment/DJ",
+        "Choose wedding dress",
+        "Choose groom's attire",
+        "Shop for rings",
+        "Order invitations",
+        "Send invitations",
+        "Plan honeymoon",
+        "Book transportation",
+        "Arrange accommodations",
+        "Get marriage license",
+        "Plan rehearsal dinner",
+        "Create seating chart",
+        "Write vows",
+        "Plan ceremony details",
+        "Finalize timeline",
+        "Confirm all vendors"
+      ]
+    },
+    "birthday": {
+      "checklist": [
+        "Set budget",
+        "Choose date and time",
+        "Create guest list",
+        "Choose venue",
+        "Select theme",
+        "Send invitations",
+        "Order cake",
+        "Plan menu/catering",
+        "Arrange entertainment",
+        "Plan decorations",
+        "Order party supplies",
+        "Plan activities/games",
+        "Arrange music",
+        "Plan party favors",
+        "Confirm RSVPs",
+        "Finalize headcount",
+        "Set up schedule",
+        "Prepare thank you notes"
+      ]
+    },
+    "company": {
+      "checklist": [
+        "Define event goals",
+        "Set budget",
+        "Choose date",
+        "Book venue",
+        "Create attendee list",
+        "Send invitations",
+        "Arrange catering",
+        "Set up AV equipment",
+        "Prepare presentations",
+        "Arrange speakers",
+        "Plan agenda",
+        "Order promotional materials",
+        "Arrange transportation",
+        "Book accommodations",
+        "Plan team building activities",
+        "Prepare name badges",
+        "Set up registration",
+        "Arrange photography",
+        "Plan networking sessions",
+        "Prepare feedback surveys"
+      ]
+    }
+  },
+  "categories": {
+    "venue": "Venue",
+    "food": "Food & Catering",
+    "drinks": "Drinks & Beverages",
+    "decoration": "Decoration",
+    "entertainment": "Entertainment",
+    "staff": "Staff & Services",
+    "extras": "Extras & Miscellaneous",
+    "photography": "Photography & Video",
+    "flowers": "Flowers",
+    "transportation": "Transportation",
+    "attire": "Attire & Accessories",
+    "stationery": "Stationery & Invitations"
+  }
+}

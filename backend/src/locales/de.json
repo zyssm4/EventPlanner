@@ -1,0 +1,186 @@
+{
+  "auth": {
+    "noToken": "Kein Authentifizierungstoken bereitgestellt",
+    "invalidToken": "Ungueltiges oder abgelaufenes Token",
+    "registered": "Benutzer erfolgreich registriert",
+    "loginSuccess": "Anmeldung erfolgreich",
+    "logoutSuccess": "Abmeldung erfolgreich",
+    "emailExists": "E-Mail existiert bereits",
+    "invalidCredentials": "Ungueltige E-Mail oder Passwort",
+    "passwordRequired": "Das Passwort muss mindestens 8 Zeichen lang sein",
+    "emailRequired": "Eine gueltige E-Mail ist erforderlich",
+    "nameRequired": "Name ist erforderlich"
+  },
+  "events": {
+    "created": "Veranstaltung erfolgreich erstellt",
+    "updated": "Veranstaltung erfolgreich aktualisiert",
+    "deleted": "Veranstaltung erfolgreich geloescht",
+    "notFound": "Veranstaltung nicht gefunden",
+    "unauthorized": "Sie sind nicht berechtigt, auf diese Veranstaltung zuzugreifen",
+    "nameRequired": "Veranstaltungsname ist erforderlich",
+    "typeRequired": "Veranstaltungstyp ist erforderlich",
+    "dateRequired": "Veranstaltungsdatum ist erforderlich",
+    "invalidType": "Ungueltiger Veranstaltungstyp"
+  },
+  "budget": {
+    "categoryCreated": "Budgetkategorie erfolgreich erstellt",
+    "categoryUpdated": "Budgetkategorie erfolgreich aktualisiert",
+    "categoryDeleted": "Budgetkategorie erfolgreich geloescht",
+    "itemCreated": "Budgetposten erfolgreich erstellt",
+    "itemUpdated": "Budgetposten erfolgreich aktualisiert",
+    "itemDeleted": "Budgetposten erfolgreich geloescht",
+    "categoryNotFound": "Budgetkategorie nicht gefunden",
+    "itemNotFound": "Budgetposten nicht gefunden",
+    "nameRequired": "Name ist erforderlich",
+    "costRequired": "Kosten muessen eine gueltige Zahl sein"
+  },
+  "checklist": {
+    "created": "Checklisteneintrag erfolgreich erstellt",
+    "updated": "Checklisteneintrag erfolgreich aktualisiert",
+    "deleted": "Checklisteneintrag erfolgreich geloescht",
+    "notFound": "Checklisteneintrag nicht gefunden",
+    "titleRequired": "Titel ist erforderlich",
+    "templateGenerated": "Checklistenvorlage erfolgreich erstellt"
+  },
+  "timeline": {
+    "created": "Zeitplaneintrag erfolgreich erstellt",
+    "updated": "Zeitplaneintrag erfolgreich aktualisiert",
+    "deleted": "Zeitplaneintrag erfolgreich geloescht",
+    "notFound": "Zeitplaneintrag nicht gefunden",
+    "titleRequired": "Titel ist erforderlich",
+    "timeRequired": "Startzeit ist erforderlich"
+  },
+  "supplier": {
+    "created": "Lieferant erfolgreich erstellt",
+    "updated": "Lieferant erfolgreich aktualisiert",
+    "deleted": "Lieferant erfolgreich geloescht",
+    "notFound": "Lieferant nicht gefunden",
+    "nameRequired": "Name ist erforderlich",
+    "categoryRequired": "Kategorie ist erforderlich",
+    "contactRequired": "Kontaktinformationen sind erforderlich"
+  },
+  "venue": {
+    "created": "Veranstaltungsort erfolgreich erstellt",
+    "updated": "Veranstaltungsort erfolgreich aktualisiert",
+    "deleted": "Veranstaltungsort erfolgreich geloescht",
+    "notFound": "Veranstaltungsort nicht gefunden",
+    "nameRequired": "Name ist erforderlich",
+    "addressRequired": "Adresse ist erforderlich",
+    "capacityRequired": "Kapazitaet ist erforderlich"
+  },
+  "export": {
+    "success": "Export erfolgreich erstellt",
+    "failed": "Export-Erstellung fehlgeschlagen",
+    "invalidFormat": "Ungueltiges Exportformat"
+  },
+  "ai": {
+    "suggestionGenerated": "KI-Vorschlag erfolgreich erstellt",
+    "failed": "KI-Vorschlag-Erstellung fehlgeschlagen",
+    "notConfigured": "KI-Dienst ist nicht konfiguriert"
+  },
+  "errors": {
+    "validation": "Validierungsfehler",
+    "duplicate": "Ressource existiert bereits",
+    "foreignKey": "Referenzierte Ressource nicht gefunden",
+    "internal": "Interner Serverfehler",
+    "notFound": "Ressource nicht gefunden",
+    "unauthorized": "Nicht autorisierter Zugriff",
+    "forbidden": "Zugriff verboten"
+  },
+  "templates": {
+    "wedding": {
+      "checklist": [
+        "Budget festlegen und Ausgaben verfolgen",
+        "Hochzeitsdatum waehlen",
+        "Zeremonienort buchen",
+        "Empfangsort buchen",
+        "Hochzeitsplaner engagieren",
+        "Gaesteliste erstellen",
+        "Save-the-Dates versenden",
+        "Hochzeitsgesellschaft auswaehlen",
+        "Fotografen buchen",
+        "Videografen buchen",
+        "Caterer engagieren",
+        "Menue auswaehlen",
+        "Floristen buchen",
+        "Hochzeitstorte bestellen",
+        "Unterhaltung/DJ buchen",
+        "Hochzeitskleid auswaehlen",
+        "Braeutigam-Outfit auswaehlen",
+        "Ringe kaufen",
+        "Einladungen bestellen",
+        "Einladungen versenden",
+        "Flitterwochen planen",
+        "Transport buchen",
+        "Unterkuenfte organisieren",
+        "Heiratsurkunde beantragen",
+        "Probe-Dinner planen",
+        "Sitzplan erstellen",
+        "Ehegeluebde schreiben",
+        "Zeremoniedetails planen",
+        "Zeitplan finalisieren",
+        "Alle Dienstleister bestaetigen"
+      ]
+    },
+    "birthday": {
+      "checklist": [
+        "Budget festlegen",
+        "Datum und Uhrzeit waehlen",
+        "Gaesteliste erstellen",
+        "Veranstaltungsort waehlen",
+        "Thema auswaehlen",
+        "Einladungen versenden",
+        "Kuchen bestellen",
+        "Menue/Catering planen",
+        "Unterhaltung organisieren",
+        "Dekoration planen",
+        "Party-Zubehoer bestellen",
+        "Aktivitaeten/Spiele planen",
+        "Musik organisieren",
+        "Gastgeschenke planen",
+        "Zusagen bestaetigen",
+        "Teilnehmerzahl finalisieren",
+        "Zeitplan erstellen",
+        "Dankeskarten vorbereiten"
+      ]
+    },
+    "company": {
+      "checklist": [
+        "Veranstaltungsziele definieren",
+        "Budget festlegen",
+        "Datum waehlen",
+        "Veranstaltungsort buchen",
+        "Teilnehmerliste erstellen",
+        "Einladungen versenden",
+        "Catering organisieren",
+        "AV-Ausruestung einrichten",
+        "Praesentationen vorbereiten",
+        "Redner organisieren",
+        "Tagesordnung planen",
+        "Werbematerial bestellen",
+        "Transport organisieren",
+        "Unterkuenfte buchen",
+        "Team-Building-Aktivitaeten planen",
+        "Namensschilder vorbereiten",
+        "Registrierung einrichten",
+        "Fotografie organisieren",
+        "Netzwerksitzungen planen",
+        "Feedback-Umfragen vorbereiten"
+      ]
+    }
+  },
+  "categories": {
+    "venue": "Veranstaltungsort",
+    "food": "Essen und Catering",
+    "drinks": "Getraenke",
+    "decoration": "Dekoration",
+    "entertainment": "Unterhaltung",
+    "staff": "Personal und Dienstleistungen",
+    "extras": "Extras und Sonstiges",
+    "photography": "Fotografie und Video",
+    "flowers": "Blumen",
+    "transportation": "Transport",
+    "attire": "Kleidung und Accessoires",
+    "stationery": "Papeterie und Einladungen"
+  }
+}
