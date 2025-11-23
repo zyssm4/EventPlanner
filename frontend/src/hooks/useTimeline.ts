@@ -33,13 +33,13 @@ export const useTimeline = (eventId: string) => {
   };
 
   const updateEntry = async (entryId: string, updates: Partial<TimelineEntry>) => {
-    const updatedEntry = await api.updateTimelineEntry(eventId, entryId, updates);
+    const updatedEntry = await api.updateTimelineEntry(entryId, updates);
     setEntries(entries.map((e) => (e.id === entryId ? updatedEntry : e)));
     return updatedEntry;
   };
 
   const deleteEntry = async (entryId: string) => {
-    await api.deleteTimelineEntry(eventId, entryId);
+    await api.deleteTimelineEntry(entryId);
     setEntries(entries.filter((e) => e.id !== entryId));
   };
 

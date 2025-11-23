@@ -33,21 +33,19 @@ export const useChecklist = (eventId: string) => {
   };
 
   const updateItem = async (itemId: string, updates: Partial<ChecklistItem>) => {
-    const updatedItem = await api.updateChecklistItem(eventId, itemId, updates);
+    const updatedItem = await api.updateChecklistItem(itemId, updates);
     setItems(items.map((i) => (i.id === itemId ? updatedItem : i)));
     return updatedItem;
   };
 
   const deleteItem = async (itemId: string) => {
-    await api.deleteChecklistItem(eventId, itemId);
+    await api.deleteChecklistItem(itemId);
     setItems(items.filter((i) => i.id !== itemId));
   };
 
   const toggleComplete = async (itemId: string) => {
-    const item = items.find((i) => i.id === itemId);
-    if (item) {
-      await updateItem(itemId, { completed: !item.completed });
-    }
+    const updatedItem = await api.toggleChecklistItem(itemId);
+    setItems(items.map((i) => (i.id === itemId ? updatedItem : i)));
   };
 
   const generateTemplate = async (eventType: string) => {
