@@ -80,7 +80,7 @@ ChecklistItemModel.init(
   }
 );
 
-ChecklistItemModel.belongsTo(Event, { foreignKey: 'eventId' });
-Event.hasMany(ChecklistItemModel, { foreignKey: 'eventId' });
+ChecklistItemModel.belongsTo(Event, { foreignKey: 'eventId', onDelete: 'CASCADE' });
+Event.hasMany(ChecklistItemModel, { foreignKey: 'eventId', onDelete: 'CASCADE' });
 
 export default ChecklistItemModel;

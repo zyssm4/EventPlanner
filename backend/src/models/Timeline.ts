@@ -60,7 +60,7 @@ TimelineEntryModel.init(
   }
 );
 
-TimelineEntryModel.belongsTo(Event, { foreignKey: 'eventId' });
-Event.hasMany(TimelineEntryModel, { foreignKey: 'eventId' });
+TimelineEntryModel.belongsTo(Event, { foreignKey: 'eventId', onDelete: 'CASCADE' });
+Event.hasMany(TimelineEntryModel, { foreignKey: 'eventId', onDelete: 'CASCADE' });
 
 export default TimelineEntryModel;

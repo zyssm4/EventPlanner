@@ -153,10 +153,10 @@ VenueModel.init(
   }
 );
 
-SupplierModel.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(SupplierModel, { foreignKey: 'userId' });
+SupplierModel.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE' });
+User.hasMany(SupplierModel, { foreignKey: 'userId', onDelete: 'CASCADE' });
 
-VenueModel.belongsTo(Event, { foreignKey: 'eventId' });
-Event.hasOne(VenueModel, { foreignKey: 'eventId' });
+VenueModel.belongsTo(Event, { foreignKey: 'eventId', onDelete: 'CASCADE' });
+Event.hasOne(VenueModel, { foreignKey: 'eventId', onDelete: 'CASCADE' });
 
 export { SupplierModel, VenueModel };
