@@ -12,16 +12,17 @@ export enum Language {
 }
 
 export interface User {
-  id: string;
+  id?: string;
   email: string;
+  password?: string;
   name: string;
   language: Language;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface Event {
-  id: string;
+  id?: string;
   userId: string;
   name: string;
   type: EventType;
@@ -29,19 +30,19 @@ export interface Event {
   guestCount: number;
   description?: string;
   venueId?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface BudgetCategory {
-  id: string;
+  id?: string;
   eventId: string;
   name: string;
   order: number;
 }
 
 export interface BudgetItem {
-  id: string;
+  id?: string;
   categoryId: string;
   name: string;
   estimatedCost: number;
@@ -51,19 +52,19 @@ export interface BudgetItem {
 }
 
 export interface ChecklistItem {
-  id: string;
+  id?: string;
   eventId: string;
   title: string;
   description?: string;
   completed: boolean;
   dueDate?: Date;
   order: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface TimelineEntry {
-  id: string;
+  id?: string;
   eventId: string;
   title: string;
   description?: string;
@@ -74,7 +75,7 @@ export interface TimelineEntry {
 }
 
 export interface Supplier {
-  id: string;
+  id?: string;
   userId: string;
   name: string;
   category: string;
@@ -87,7 +88,7 @@ export interface Supplier {
 }
 
 export interface Venue {
-  id: string;
+  id?: string;
   eventId: string;
   name: string;
   address: string;

@@ -54,7 +54,8 @@ export const upload = (fieldName: string, options: UploadOptions = {}) => {
       // Simple multipart parser
       const boundary = contentType.split('boundary=')[1];
       if (!boundary) {
-        return res.status(400).json({ error: 'Invalid multipart boundary' });
+        res.status(400).json({ error: 'Invalid multipart boundary' });
+        return;
       }
 
       const chunks: Buffer[] = [];
