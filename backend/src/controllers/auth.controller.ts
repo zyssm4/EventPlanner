@@ -1,12 +1,12 @@
 
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
-import { Language } from '../../../shared/types';
+import { Language } from '../types';
 import { AuthRequest } from '../middleware/auth.middleware';
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password, name, language } = req.body;
 
@@ -39,20 +39,22 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      res.status(401).json({ error: 'Invalid credentials' });
+      return;
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      res.status(401).json({ error: 'Invalid credentials' });
+      return;
     }
 
     const token = jwt.sign(
@@ -75,7 +77,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const updateLanguage = async (req: AuthRequest, res: Response) => {
+export const updateLanguage = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { language } = req.body;
 
@@ -90,12 +92,13 @@ export const updateLanguage = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const refreshToken = async (req: AuthRequest, res: Response) => {
+export const refreshToken = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = await User.findByPk(req.userId);
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      res.status(404).json({ error: 'User not found' });
+      return;
     }
 
     const token = jwt.sign(
@@ -110,7 +113,7 @@ export const refreshToken = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const logout = async (req: AuthRequest, res: Response) => {
+export const logout = async (_req: AuthRequest, res: Response): Promise<void> => {
   try {
     res.json({ message: 'Logged out successfully' });
   } catch (error) {
@@ -118,14 +121,15 @@ export const logout = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getProfile = async (req: AuthRequest, res: Response) => {
+export const getProfile = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = await User.findByPk(req.userId, {
       attributes: ['id', 'email', 'name', 'language', 'createdAt']
     });
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      res.status(404).json({ error: 'User not found' });
+      return;
     }
 
     res.json(user);

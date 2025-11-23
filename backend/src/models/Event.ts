@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
-import { Event as IEvent, EventType } from '../../../shared/types';
+import { Event as IEvent, EventType } from '../types';
 import User from './User';
 
 class Event extends Model<IEvent> implements IEvent {

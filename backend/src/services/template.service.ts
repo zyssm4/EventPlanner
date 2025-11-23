@@ -1,4 +1,4 @@
-import { EventType, Language } from '../../../shared/types';
+import { EventType, Language } from '../types';
 import i18next from '../config/i18n';
 
 export class TemplateService {
@@ -9,7 +9,7 @@ export class TemplateService {
     const checklist = i18next.t(key, { returnObjects: true });
 
     if (Array.isArray(checklist)) {
-      return checklist;
+      return checklist.map(item => typeof item === 'string' ? item : String(item));
     }
 
     return [];

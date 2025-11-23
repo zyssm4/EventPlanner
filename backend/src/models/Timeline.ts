@@ -1,7 +1,7 @@
 
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
-import { TimelineEntry } from '../../../shared/types';
+import { TimelineEntry } from '../types';
 import Event from './Event';
 
 class TimelineEntryModel extends Model<TimelineEntry> implements TimelineEntry {

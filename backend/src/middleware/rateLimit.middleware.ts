@@ -24,7 +24,7 @@ export const rateLimit = (options: RateLimitOptions = {}) => {
     return req.ip || req.headers['x-forwarded-for'] as string || 'unknown';
   });
 
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     const key = keyGenerator(req);
     const now = Date.now();
 
@@ -46,7 +46,8 @@ export const rateLimit = (options: RateLimitOptions = {}) => {
       res.setHeader('X-RateLimit-Remaining', 0);
       res.setHeader('X-RateLimit-Reset', defaultStore[key].resetTime);
 
-      return res.status(429).json({ error: message });
+      res.status(429).json({ error: message });
+      return;
     }
 
     // Set rate limit headers

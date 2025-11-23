@@ -42,11 +42,12 @@ export const upload = (fieldName: string, options: UploadOptions = {}) => {
     fs.mkdirSync(config.uploadDir!, { recursive: true });
   }
 
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     const contentType = req.headers['content-type'] || '';
 
     if (!contentType.includes('multipart/form-data')) {
-      return next();
+      next();
+      return;
     }
 
     try {
@@ -62,7 +63,7 @@ export const upload = (fieldName: string, options: UploadOptions = {}) => {
         chunks.push(chunk);
       });
 
-      req.on('end', async () => {
+      req.on('end', () => {
         const buffer = Buffer.concat(chunks);
         const parts = buffer.toString().split(`--${boundary}`);
 
@@ -82,9 +83,10 @@ export const upload = (fieldName: string, options: UploadOptions = {}) => {
 
             // Check file type
             if (config.allowedTypes && !config.allowedTypes.includes(mimetype)) {
-              return res.status(400).json({
+              res.status(400).json({
                 error: `File type ${mimetype} not allowed. Allowed types: ${config.allowedTypes.join(', ')}`
               });
+              return;
             }
 
             // Extract file content
@@ -95,9 +97,10 @@ export const upload = (fieldName: string, options: UploadOptions = {}) => {
 
             // Check file size
             if (fileBuffer.length > config.maxFileSize!) {
-              return res.status(400).json({
+              res.status(400).json({
                 error: `File too large. Maximum size: ${config.maxFileSize! / 1024 / 1024}MB`
               });
+              return;
             }
 
             // Generate unique filename
@@ -109,7 +112,7 @@ export const upload = (fieldName: string, options: UploadOptions = {}) => {
             fs.writeFileSync(filepath, fileBuffer);
 
             req.file = {
-              fieldname,
+              fieldname: fieldName,
               filename,
               originalname,
               mimetype,

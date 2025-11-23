@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
-import { BudgetCategory, BudgetItem } from '../../../shared/types';
+import { BudgetCategory, BudgetItem } from '../types';
 import Event from './Event';
 
 class BudgetCategoryModel extends Model<BudgetCategory> implements BudgetCategory {

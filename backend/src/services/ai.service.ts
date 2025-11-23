@@ -1,4 +1,4 @@
-import { EventType, Language } from '../../../shared/types';
+import { EventType, Language } from '../types';
 
 interface AIBudgetSuggestion {
   category: string;
@@ -117,7 +117,7 @@ export class AIService {
       throw new Error(`OpenAI API error: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data = await response.json() as { choices: Array<{ message: { content: string } }> };
     return data.choices[0].message.content;
   }
 
@@ -127,7 +127,7 @@ export class AIService {
     totalBudget: number,
     language: Language
   ): string {
-    const langMap = { EN: 'English', FR: 'French', DE: 'German' };
+    const langMap: Record<string, string> = { en: 'English', fr: 'French', de: 'German' };
     return `Generate budget suggestions for a ${eventType} event with ${guestCount} guests and a total budget of $${totalBudget}.
     Response in ${langMap[language]}.
     Return a JSON array with this structure:
@@ -139,7 +139,7 @@ export class AIService {
     eventDate: Date,
     language: Language
   ): string {
-    const langMap = { EN: 'English', FR: 'French', DE: 'German' };
+    const langMap: Record<string, string> = { en: 'English', fr: 'French', de: 'German' };
     return `Generate a comprehensive checklist for a ${eventType} event scheduled for ${eventDate.toISOString().split('T')[0]}.
     Response in ${langMap[language]}.
     Return a JSON array with this structure:
@@ -148,11 +148,11 @@ export class AIService {
 
   private static getTimelinePrompt(
     eventType: EventType,
-    eventDate: Date,
+    _eventDate: Date,
     guestCount: number,
     language: Language
   ): string {
-    const langMap = { EN: 'English', FR: 'French', DE: 'German' };
+    const langMap: Record<string, string> = { en: 'English', fr: 'French', de: 'German' };
     return `Generate a day-of timeline for a ${eventType} event with ${guestCount} guests.
     Response in ${langMap[language]}.
     Return a JSON array with this structure:
@@ -161,10 +161,9 @@ export class AIService {
 
   private static getDefaultBudgetSuggestions(
     eventType: EventType,
-    guestCount: number,
+    _guestCount: number,
     totalBudget: number
   ): AIBudgetSuggestion[] {
-    const perGuest = totalBudget / guestCount;
 
     const templates: Record<EventType, AIBudgetSuggestion[]> = {
       [EventType.WEDDING]: [

@@ -1,7 +1,7 @@
 
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
-import { Supplier, Venue } from '../../../shared/types';
+import { Supplier, Venue } from '../types';
 import User from './User';
 import Event from './Event';
 

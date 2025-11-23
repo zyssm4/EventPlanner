@@ -1,4 +1,4 @@
-import { EventType, Language } from '../../../shared/types';
+import { EventType, Language } from '../types';
 
 export const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

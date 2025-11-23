@@ -4,7 +4,7 @@ import { AuthRequest } from '../middleware/auth.middleware';
 import { SupplierModel, VenueModel } from '../models/Supplier';
 import Event from '../models/Event';
 
-export const createSupplier = async (req: AuthRequest, res: Response) => {
+export const createSupplier = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const supplier = await SupplierModel.create({
       userId: req.userId!,
@@ -17,7 +17,7 @@ export const createSupplier = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getSuppliers = async (req: AuthRequest, res: Response) => {
+export const getSuppliers = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const suppliers = await SupplierModel.findAll({
       where: { userId: req.userId! },
@@ -30,7 +30,7 @@ export const getSuppliers = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getSupplier = async (req: AuthRequest, res: Response) => {
+export const getSupplier = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const supplier = await SupplierModel.findOne({
       where: {
@@ -40,7 +40,8 @@ export const getSupplier = async (req: AuthRequest, res: Response) => {
     });
 
     if (!supplier) {
-      return res.status(404).json({ error: 'Supplier not found' });
+      res.status(404).json({ error: 'Supplier not found' });
+      return;
     }
 
     res.json(supplier);
@@ -49,7 +50,7 @@ export const getSupplier = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const updateSupplier = async (req: AuthRequest, res: Response) => {
+export const updateSupplier = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const [updated] = await SupplierModel.update(req.body, {
       where: {
@@ -59,7 +60,8 @@ export const updateSupplier = async (req: AuthRequest, res: Response) => {
     });
 
     if (!updated) {
-      return res.status(404).json({ error: 'Supplier not found' });
+      res.status(404).json({ error: 'Supplier not found' });
+      return;
     }
 
     const supplier = await SupplierModel.findByPk(req.params.id);
@@ -69,7 +71,7 @@ export const updateSupplier = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deleteSupplier = async (req: AuthRequest, res: Response) => {
+export const deleteSupplier = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const deleted = await SupplierModel.destroy({
       where: {
@@ -79,7 +81,8 @@ export const deleteSupplier = async (req: AuthRequest, res: Response) => {
     });
 
     if (!deleted) {
-      return res.status(404).json({ error: 'Supplier not found' });
+      res.status(404).json({ error: 'Supplier not found' });
+      return;
     }
 
     res.status(204).send();
@@ -88,7 +91,7 @@ export const deleteSupplier = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const createVenue = async (req: AuthRequest, res: Response) => {
+export const createVenue = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -98,7 +101,8 @@ export const createVenue = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const venue = await VenueModel.create(req.body);
@@ -109,7 +113,7 @@ export const createVenue = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getVenue = async (req: AuthRequest, res: Response) => {
+export const getVenue = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -119,7 +123,8 @@ export const getVenue = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const venue = await VenueModel.findOne({
@@ -127,7 +132,8 @@ export const getVenue = async (req: AuthRequest, res: Response) => {
     });
 
     if (!venue) {
-      return res.status(404).json({ error: 'Venue not found' });
+      res.status(404).json({ error: 'Venue not found' });
+      return;
     }
 
     res.json(venue);
@@ -136,14 +142,15 @@ export const getVenue = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const updateVenue = async (req: AuthRequest, res: Response) => {
+export const updateVenue = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const [updated] = await VenueModel.update(req.body, {
       where: { id: req.params.id }
     });
 
     if (!updated) {
-      return res.status(404).json({ error: 'Venue not found' });
+      res.status(404).json({ error: 'Venue not found' });
+      return;
     }
 
     const venue = await VenueModel.findByPk(req.params.id);
@@ -153,14 +160,15 @@ export const updateVenue = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deleteVenue = async (req: AuthRequest, res: Response) => {
+export const deleteVenue = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const deleted = await VenueModel.destroy({
       where: { id: req.params.id }
     });
 
     if (!deleted) {
-      return res.status(404).json({ error: 'Venue not found' });
+      res.status(404).json({ error: 'Venue not found' });
+      return;
     }
 
     res.status(204).send();
