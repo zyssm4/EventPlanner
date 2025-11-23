@@ -1,26 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Plus, Building2, Users, MapPin, Phone, Mail, ArrowLeft, Loader2 } from 'lucide-react';
-import { SupplierList } from '../components/logistics/SupplierList';
-import { SupplierForm } from '../components/logistics/SupplierForm';
-import { VenueDetail } from '../components/logistics/VenueDetail';
-import { VenueForm } from '../components/logistics/VenueForm';
-import api from '../services/api';
-
-interface Event {
-  id: string;
-  name: string;
-}
+import { api } from '../services/api';
 
 interface Venue {
   id: string;
   name: string;
   address: string;
   capacity: number;
-  contactName?: string;
-  contactPhone?: string;
-  contactEmail?: string;
-  notes?: string;
+  contact: string;
+  phone?: string;
+  email?: string;
 }
 
 export const LogisticsPage: React.FC = () => {
@@ -29,38 +19,34 @@ export const LogisticsPage: React.FC = () => {
   const eventId = searchParams.get('eventId');
 
   const [activeTab, setActiveTab] = useState<'suppliers' | 'venue'>('suppliers');
-  const [showSupplierForm, setShowSupplierForm] = useState(false);
-  const [showVenueForm, setShowVenueForm] = useState(false);
-  const [event, setEvent] = useState<Event | null>(null);
+  const [eventName, setEventName] = useState<string>('');
   const [venue, setVenue] = useState<Venue | null>(null);
   const [loading, setLoading] = useState(true);
+  const [suppliers, setSuppliers] = useState<any[]>([]);
 
   useEffect(() => {
-    if (eventId) {
-      loadEventData();
-    } else {
-      setLoading(false);
-    }
+    loadData();
   }, [eventId]);
 
-  const loadEventData = async () => {
+  const loadData = async () => {
     try {
-      const [eventResponse, venueResponse] = await Promise.all([
-        api.get(`/events/${eventId}`),
-        api.get(`/events/${eventId}/venue`).catch(() => ({ data: null }))
+      const [suppliersData, venueData] = await Promise.all([
+        api.getSuppliers(),
+        eventId ? api.getVenue(eventId) : null
       ]);
-      setEvent(eventResponse.data);
-      setVenue(venueResponse.data);
+
+      setSuppliers(suppliersData);
+      if (venueData) setVenue(venueData);
+
+      if (eventId) {
+        const eventData = await api.getEvent(eventId);
+        setEventName(eventData.name);
+      }
     } catch (error) {
-      console.error('Failed to load event data:', error);
+      console.error('Failed to load data:', error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleVenueSaved = (savedVenue: Venue) => {
-    setVenue(savedVenue);
-    setShowVenueForm(false);
   };
 
   if (loading) {
@@ -84,8 +70,8 @@ export const LogisticsPage: React.FC = () => {
           </button>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Logistics & Suppliers</h1>
-            {event && (
-              <p className="text-gray-600">Managing logistics for: {event.name}</p>
+            {eventName && (
+              <p className="text-gray-600">Managing logistics for: {eventName}</p>
             )}
           </div>
         </div>
@@ -124,7 +110,6 @@ export const LogisticsPage: React.FC = () => {
         <div>
           <div className="mb-4 flex justify-end">
             <button
-              onClick={() => setShowSupplierForm(true)}
               className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -132,21 +117,38 @@ export const LogisticsPage: React.FC = () => {
             </button>
           </div>
 
-          <SupplierList />
-
-          {showSupplierForm && (
-            <SupplierForm
-              onClose={() => setShowSupplierForm(false)}
-              onSaved={() => {
-                setShowSupplierForm(false);
-                // Trigger refresh of supplier list
-              }}
-            />
+          {suppliers.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-lg shadow">
+              <Users className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+              <h2 className="text-xl font-semibold text-gray-700 mb-2">No Suppliers</h2>
+              <p className="text-gray-500">Add your first supplier to get started</p>
+            </div>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {suppliers.map((supplier) => (
+                <div key={supplier.id} className="bg-white rounded-lg shadow p-4">
+                  <h3 className="font-semibold text-gray-900">{supplier.name}</h3>
+                  <p className="text-sm text-gray-500">{supplier.category}</p>
+                  {supplier.phone && (
+                    <p className="text-sm text-gray-600 mt-2 flex items-center">
+                      <Phone className="w-3 h-3 mr-1" />
+                      {supplier.phone}
+                    </p>
+                  )}
+                  {supplier.email && (
+                    <p className="text-sm text-gray-600 flex items-center">
+                      <Mail className="w-3 h-3 mr-1" />
+                      {supplier.email}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}
 
-      {activeTab === 'venue' && eventId && (
+      {activeTab === 'venue' && (
         <div>
           {venue ? (
             <div className="bg-white rounded-lg shadow p-6">
@@ -158,10 +160,7 @@ export const LogisticsPage: React.FC = () => {
                     {venue.address}
                   </p>
                 </div>
-                <button
-                  onClick={() => setShowVenueForm(true)}
-                  className="px-3 py-1 text-sm text-indigo-600 border border-indigo-600 rounded hover:bg-indigo-50"
-                >
+                <button className="px-3 py-1 text-sm text-indigo-600 border border-indigo-600 rounded hover:bg-indigo-50">
                   Edit
                 </button>
               </div>
@@ -174,51 +173,32 @@ export const LogisticsPage: React.FC = () => {
 
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <h3 className="font-medium text-gray-900 mb-2">Contact</h3>
-                  {venue.contactName && <p className="text-gray-700">{venue.contactName}</p>}
-                  {venue.contactPhone && (
+                  <p className="text-gray-700">{venue.contact}</p>
+                  {venue.phone && (
                     <p className="text-gray-600 flex items-center mt-1">
                       <Phone className="w-3 h-3 mr-1" />
-                      {venue.contactPhone}
+                      {venue.phone}
                     </p>
                   )}
-                  {venue.contactEmail && (
+                  {venue.email && (
                     <p className="text-gray-600 flex items-center mt-1">
                       <Mail className="w-3 h-3 mr-1" />
-                      {venue.contactEmail}
+                      {venue.email}
                     </p>
                   )}
                 </div>
               </div>
-
-              {venue.notes && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                  <h3 className="font-medium text-gray-900 mb-2">Notes</h3>
-                  <p className="text-gray-600 whitespace-pre-wrap">{venue.notes}</p>
-                </div>
-              )}
             </div>
           ) : (
             <div className="text-center py-12 bg-white rounded-lg shadow">
               <Building2 className="w-16 h-16 mx-auto text-gray-400 mb-4" />
               <h2 className="text-xl font-semibold text-gray-700 mb-2">No Venue Set</h2>
               <p className="text-gray-500 mb-6">Add a venue for your event</p>
-              <button
-                onClick={() => setShowVenueForm(true)}
-                className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-              >
+              <button className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Venue
               </button>
             </div>
-          )}
-
-          {showVenueForm && (
-            <VenueForm
-              eventId={eventId}
-              venue={venue}
-              onClose={() => setShowVenueForm(false)}
-              onSaved={handleVenueSaved}
-            />
           )}
         </div>
       )}

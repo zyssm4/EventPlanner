@@ -2,9 +2,9 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth.middleware';
 import Event from '../models/Event';
-import { EventType } from '../../../shared/types';
+import { EventType } from '../types';
 
-export const createEvent = async (req: AuthRequest, res: Response) => {
+export const createEvent = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.create({
       userId: req.userId!,
@@ -21,7 +21,7 @@ export const createEvent = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getEvents = async (req: AuthRequest, res: Response) => {
+export const getEvents = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const events = await Event.findAll({
       where: { userId: req.userId! },
@@ -34,7 +34,7 @@ export const getEvents = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getEvent = async (req: AuthRequest, res: Response) => {
+export const getEvent = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -44,7 +44,8 @@ export const getEvent = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     res.json(event);
@@ -53,7 +54,7 @@ export const getEvent = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const updateEvent = async (req: AuthRequest, res: Response) => {
+export const updateEvent = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const [updated] = await Event.update(req.body, {
       where: {
@@ -63,7 +64,8 @@ export const updateEvent = async (req: AuthRequest, res: Response) => {
     });
 
     if (!updated) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const event = await Event.findByPk(req.params.id);
@@ -73,7 +75,7 @@ export const updateEvent = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deleteEvent = async (req: AuthRequest, res: Response) => {
+export const deleteEvent = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const deleted = await Event.destroy({
       where: {
@@ -83,7 +85,8 @@ export const deleteEvent = async (req: AuthRequest, res: Response) => {
     });
 
     if (!deleted) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     res.status(204).send();
@@ -92,7 +95,7 @@ export const deleteEvent = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const duplicateEvent = async (req: AuthRequest, res: Response) => {
+export const duplicateEvent = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const original = await Event.findOne({
       where: {
@@ -102,7 +105,8 @@ export const duplicateEvent = async (req: AuthRequest, res: Response) => {
     });
 
     if (!original) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const duplicate = await Event.create({

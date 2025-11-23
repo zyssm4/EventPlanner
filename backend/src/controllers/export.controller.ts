@@ -2,12 +2,11 @@ import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth.middleware';
 import { PDFService } from '../services/pdf.service';
 import { ExcelService } from '../services/excel.service';
-import { AIService } from '../services/ai.service';
 import Event from '../models/Event';
 import User from '../models/User';
-import { Language } from '../../../shared/types';
+import { Language } from '../types';
 
-export const exportEventPlanPDF = async (req: AuthRequest, res: Response) => {
+export const exportEventPlanPDF = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -17,7 +16,8 @@ export const exportEventPlanPDF = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const user = await User.findByPk(req.userId!);
@@ -34,7 +34,7 @@ export const exportEventPlanPDF = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const exportBudgetPDF = async (req: AuthRequest, res: Response) => {
+export const exportBudgetPDF = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -44,7 +44,8 @@ export const exportBudgetPDF = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const user = await User.findByPk(req.userId!);
@@ -61,7 +62,7 @@ export const exportBudgetPDF = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const exportBudgetExcel = async (req: AuthRequest, res: Response) => {
+export const exportBudgetExcel = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -71,7 +72,8 @@ export const exportBudgetExcel = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const user = await User.findByPk(req.userId!);
@@ -88,7 +90,7 @@ export const exportBudgetExcel = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const exportChecklistPDF = async (req: AuthRequest, res: Response) => {
+export const exportChecklistPDF = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -98,7 +100,8 @@ export const exportChecklistPDF = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const user = await User.findByPk(req.userId!);
@@ -115,7 +118,7 @@ export const exportChecklistPDF = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const exportEventJSON = async (req: AuthRequest, res: Response) => {
+export const exportEventJSON = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -125,7 +128,8 @@ export const exportEventJSON = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     // Export complete event data including all relations

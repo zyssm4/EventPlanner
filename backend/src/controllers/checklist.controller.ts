@@ -5,9 +5,9 @@ import ChecklistItemModel from '../models/Checklist';
 import Event from '../models/Event';
 import User from '../models/User';
 import { TemplateService } from '../services/template.service';
-import { Language } from '../../../shared/types';
+import { Language } from '../types';
 
-export const createChecklistItem = async (req: AuthRequest, res: Response) => {
+export const createChecklistItem = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -17,7 +17,8 @@ export const createChecklistItem = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const item = await ChecklistItemModel.create({
@@ -35,7 +36,7 @@ export const createChecklistItem = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getChecklistItems = async (req: AuthRequest, res: Response) => {
+export const getChecklistItems = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -45,7 +46,8 @@ export const getChecklistItems = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const items = await ChecklistItemModel.findAll({
@@ -59,14 +61,15 @@ export const getChecklistItems = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const updateChecklistItem = async (req: AuthRequest, res: Response) => {
+export const updateChecklistItem = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const [updated] = await ChecklistItemModel.update(req.body, {
       where: { id: req.params.id }
     });
 
     if (!updated) {
-      return res.status(404).json({ error: 'Item not found' });
+      res.status(404).json({ error: 'Item not found' });
+      return;
     }
 
     const item = await ChecklistItemModel.findByPk(req.params.id);
@@ -76,14 +79,15 @@ export const updateChecklistItem = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deleteChecklistItem = async (req: AuthRequest, res: Response) => {
+export const deleteChecklistItem = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const deleted = await ChecklistItemModel.destroy({
       where: { id: req.params.id }
     });
 
     if (!deleted) {
-      return res.status(404).json({ error: 'Item not found' });
+      res.status(404).json({ error: 'Item not found' });
+      return;
     }
 
     res.status(204).send();
@@ -92,12 +96,13 @@ export const deleteChecklistItem = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const toggleChecklistItem = async (req: AuthRequest, res: Response) => {
+export const toggleChecklistItem = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const item = await ChecklistItemModel.findByPk(req.params.id);
 
     if (!item) {
-      return res.status(404).json({ error: 'Item not found' });
+      res.status(404).json({ error: 'Item not found' });
+      return;
     }
 
     item.completed = !item.completed;
@@ -109,7 +114,7 @@ export const toggleChecklistItem = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const generateTemplate = async (req: AuthRequest, res: Response) => {
+export const generateTemplate = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -119,7 +124,8 @@ export const generateTemplate = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const user = await User.findByPk(req.userId!);

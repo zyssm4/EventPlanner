@@ -44,10 +44,10 @@ router.delete('/checklist/:id', authenticate, checklistController.deleteChecklis
 router.post('/events/:eventId/checklist/template', authenticate, checklistController.generateTemplate);
 
 // Timeline routes
-router.get('/events/:eventId/timeline', authenticate, timelineController.getTimeline);
-router.post('/events/:eventId/timeline', authenticate, timelineController.createEntry);
-router.put('/timeline/:id', authenticate, timelineController.updateEntry);
-router.delete('/timeline/:id', authenticate, timelineController.deleteEntry);
+router.get('/events/:eventId/timeline', authenticate, timelineController.getTimelineEntries);
+router.post('/events/:eventId/timeline', authenticate, timelineController.createTimelineEntry);
+router.put('/timeline/:id', authenticate, timelineController.updateTimelineEntry);
+router.delete('/timeline/:id', authenticate, timelineController.deleteTimelineEntry);
 
 // Supplier routes
 router.get('/suppliers', authenticate, supplierController.getSuppliers);

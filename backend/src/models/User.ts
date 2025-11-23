@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
-import { User as IUser, Language } from '../../../shared/types';
+import { User as IUser, Language } from '../types';
 
 class User extends Model<IUser> implements IUser {
   public id!: string;

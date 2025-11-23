@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { Language } from '../../../shared/types';
+import { Language } from '../types';
 
 interface EmailOptions {
   to: string;
@@ -67,7 +67,7 @@ export class EmailService {
     language: Language
   ): Promise<boolean> {
     const templates = {
-      EN: {
+      en: {
         subject: 'Welcome to Event Planner!',
         html: `
           <h1>Welcome, ${name}!</h1>
@@ -84,7 +84,7 @@ export class EmailService {
           <p>The Event Planner Team</p>
         `
       },
-      FR: {
+      fr: {
         subject: 'Bienvenue sur Event Planner!',
         html: `
           <h1>Bienvenue, ${name}!</h1>
@@ -101,7 +101,7 @@ export class EmailService {
           <p>L'équipe Event Planner</p>
         `
       },
-      DE: {
+      de: {
         subject: 'Willkommen bei Event Planner!',
         html: `
           <h1>Willkommen, ${name}!</h1>
@@ -134,7 +134,7 @@ export class EmailService {
     );
 
     const templates = {
-      EN: {
+      en: {
         subject: `Reminder: ${reminder.eventName} in ${daysUntil} days`,
         html: `
           <h1>Event Reminder</h1>
@@ -145,7 +145,7 @@ export class EmailService {
           <p>Best regards,<br>The Event Planner Team</p>
         `
       },
-      FR: {
+      fr: {
         subject: `Rappel: ${reminder.eventName} dans ${daysUntil} jours`,
         html: `
           <h1>Rappel d'événement</h1>
@@ -156,7 +156,7 @@ export class EmailService {
           <p>Cordialement,<br>L'équipe Event Planner</p>
         `
       },
-      DE: {
+      de: {
         subject: `Erinnerung: ${reminder.eventName} in ${daysUntil} Tagen`,
         html: `
           <h1>Veranstaltungserinnerung</h1>
@@ -179,7 +179,7 @@ export class EmailService {
 
   static async sendChecklistReminder(reminder: ChecklistReminder): Promise<boolean> {
     const templates = {
-      EN: {
+      en: {
         subject: `Task Due: ${reminder.itemTitle}`,
         html: `
           <h1>Checklist Task Reminder</h1>
@@ -191,7 +191,7 @@ export class EmailService {
           <p>Best regards,<br>The Event Planner Team</p>
         `
       },
-      FR: {
+      fr: {
         subject: `Tâche à faire: ${reminder.itemTitle}`,
         html: `
           <h1>Rappel de tâche</h1>
@@ -203,7 +203,7 @@ export class EmailService {
           <p>Cordialement,<br>L'équipe Event Planner</p>
         `
       },
-      DE: {
+      de: {
         subject: `Aufgabe fällig: ${reminder.itemTitle}`,
         html: `
           <h1>Checklisten-Erinnerung</h1>
@@ -234,7 +234,7 @@ export class EmailService {
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
     const templates = {
-      EN: {
+      en: {
         subject: 'Password Reset Request',
         html: `
           <h1>Password Reset</h1>
@@ -246,7 +246,7 @@ export class EmailService {
           <p>Best regards,<br>The Event Planner Team</p>
         `
       },
-      FR: {
+      fr: {
         subject: 'Demande de réinitialisation du mot de passe',
         html: `
           <h1>Réinitialisation du mot de passe</h1>
@@ -258,7 +258,7 @@ export class EmailService {
           <p>Cordialement,<br>L'équipe Event Planner</p>
         `
       },
-      DE: {
+      de: {
         subject: 'Passwort-Zurücksetzung angefordert',
         html: `
           <h1>Passwort zurücksetzen</h1>

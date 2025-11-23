@@ -1,6 +1,6 @@
 
 import PDFDocument from 'pdfkit';
-import { Language, EventType } from '../../../shared/types';
+import { Language } from '../types';
 import i18next from '../config/i18n';
 import Event from '../models/Event';
 import { BudgetCategoryModel, BudgetItemModel } from '../models/Budget';

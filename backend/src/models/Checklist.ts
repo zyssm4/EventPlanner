@@ -1,7 +1,7 @@
 
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
-import { ChecklistItem } from '../../../shared/types';
+import { ChecklistItem } from '../types';
 import Event from './Event';
 
 class ChecklistItemModel extends Model<ChecklistItem> implements ChecklistItem {

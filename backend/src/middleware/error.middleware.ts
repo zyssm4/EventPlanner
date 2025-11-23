@@ -17,7 +17,7 @@ export const errorHandler = (
   error: Error | AppError,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void => {
   console.error('Error:', error);
 

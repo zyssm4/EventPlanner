@@ -3,9 +3,9 @@ import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth.middleware';
 import { BudgetCategoryModel, BudgetItemModel } from '../models/Budget';
 import Event from '../models/Event';
-import { BudgetSummary } from '../../../shared/types';
+import { BudgetSummary } from '../types';
 
-export const createCategory = async (req: AuthRequest, res: Response) => {
+export const createCategory = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -15,7 +15,8 @@ export const createCategory = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const category = await BudgetCategoryModel.create({
@@ -30,7 +31,7 @@ export const createCategory = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getCategories = async (req: AuthRequest, res: Response) => {
+export const getCategories = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -40,7 +41,8 @@ export const getCategories = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const categories = await BudgetCategoryModel.findAll({
@@ -55,14 +57,15 @@ export const getCategories = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const updateCategory = async (req: AuthRequest, res: Response) => {
+export const updateCategory = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const [updated] = await BudgetCategoryModel.update(req.body, {
       where: { id: req.params.id }
     });
 
     if (!updated) {
-      return res.status(404).json({ error: 'Category not found' });
+      res.status(404).json({ error: 'Category not found' });
+      return;
     }
 
     const category = await BudgetCategoryModel.findByPk(req.params.id);
@@ -72,14 +75,15 @@ export const updateCategory = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deleteCategory = async (req: AuthRequest, res: Response) => {
+export const deleteCategory = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const deleted = await BudgetCategoryModel.destroy({
       where: { id: req.params.id }
     });
 
     if (!deleted) {
-      return res.status(404).json({ error: 'Category not found' });
+      res.status(404).json({ error: 'Category not found' });
+      return;
     }
 
     res.status(204).send();
@@ -88,7 +92,7 @@ export const deleteCategory = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const createItem = async (req: AuthRequest, res: Response) => {
+export const createItem = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const item = await BudgetItemModel.create({
       categoryId: req.body.categoryId,
@@ -105,14 +109,15 @@ export const createItem = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const updateItem = async (req: AuthRequest, res: Response) => {
+export const updateItem = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const [updated] = await BudgetItemModel.update(req.body, {
       where: { id: req.params.id }
     });
 
     if (!updated) {
-      return res.status(404).json({ error: 'Item not found' });
+      res.status(404).json({ error: 'Item not found' });
+      return;
     }
 
     const item = await BudgetItemModel.findByPk(req.params.id);
@@ -122,14 +127,15 @@ export const updateItem = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deleteItem = async (req: AuthRequest, res: Response) => {
+export const deleteItem = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const deleted = await BudgetItemModel.destroy({
       where: { id: req.params.id }
     });
 
     if (!deleted) {
-      return res.status(404).json({ error: 'Item not found' });
+      res.status(404).json({ error: 'Item not found' });
+      return;
     }
 
     res.status(204).send();
@@ -138,7 +144,7 @@ export const deleteItem = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getBudgetSummary = async (req: AuthRequest, res: Response) => {
+export const getBudgetSummary = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const event = await Event.findOne({
       where: {
@@ -148,7 +154,8 @@ export const getBudgetSummary = async (req: AuthRequest, res: Response) => {
     });
 
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      res.status(404).json({ error: 'Event not found' });
+      return;
     }
 
     const categories = await BudgetCategoryModel.findAll({
@@ -165,10 +172,10 @@ export const getBudgetSummary = async (req: AuthRequest, res: Response) => {
         where: { categoryId: category.id }
       });
 
-      const categoryEstimated = items.reduce((sum, item) => 
+      const categoryEstimated = items.reduce((sum, item) =>
         sum + parseFloat(item.estimatedCost.toString()), 0
       );
-      const categoryActual = items.reduce((sum, item) => 
+      const categoryActual = items.reduce((sum, item) =>
         sum + parseFloat(item.actualCost.toString()), 0
       );
 
